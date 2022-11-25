@@ -3,40 +3,38 @@ package com.example.demo_foodmap.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 
+
 @Entity
-@Table(name = "foodmap")
-public class Foodmap {
-	
+@Table(name = "food_map_meal")
+@IdClass(FoodMapMealId.class)
+public class FoodMapMeal {
+
 	@Id
-	@Column(name = "city")
-	private String city;
-	
-	@Id
-	@Column(name = "shop")
+	@Column(name = "shop_in")
 	private String shop;
-	
+
 	@Id
 	@Column(name = "food")
 	private String food;
 
 	@Column(name = "price")
 	private int price;
-	
-	@Column(name = "star")
-	private int star;
-	
-	public Foodmap() {
-		
+
+	@Column(name = "food_star")
+	private int foodStar;
+
+	public FoodMapMeal() {
+
 	}
 
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
+	public FoodMapMeal(String shop_in, String food, int price, int foodStar) {
+		this.shop = shop_in;
+		this.food = food;
+        this.price = price;
+        this.foodStar = foodStar;
 	}
 
 	public String getShop() {
@@ -63,13 +61,13 @@ public class Foodmap {
 		this.price = price;
 	}
 
-	public int getStar() {
-		return star;
+	public int getFoodStar() {
+		return foodStar;
 	}
 
-	public void setStar(int star) {
-		this.star = star;
+	public void setFoodStar(int foodStar) {
+		this.foodStar = foodStar;
 	}
-	
+
 	
 }
