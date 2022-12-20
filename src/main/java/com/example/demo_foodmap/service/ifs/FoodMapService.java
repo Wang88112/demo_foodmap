@@ -8,25 +8,25 @@ import com.example.demo_foodmap.vo.FoodMapRes;
 
 public interface FoodMapService {
 
-	// 1.«°¥« ©±¦W(pk) ©±®aµû»ù(1-5)
+	// 1.æ–°å¢åº—å®¶è³‡è¨Š
 	public FoodMapShop createfoodMap_basic(String city, String shop_basic);
 
-	// 2.©±¦W À\ÂI »ù®æ À\ÂIµû»ù(1-5)
+	// 2.æ–°å¢é¤é»è³‡è¨Š
 	public FoodMapMeal createfoodMap_meal(String shop, String food, int price, int food_star);
 
-	// 3.§ó·s «°¥« ©±¦W(pk)
+	// 3.æ›´æ–°åº—å®¶è³‡è¨Š
 	public FoodMapShop updateShopInfo(String shopName, String city, String newShopName);
 
-	// 4.§ó·s À\ÂI »ù®æ À\ÂIµû»ù(1-5)
+	// 4.æ›´é¤é»è³‡è¨Š
 	public FoodMapMeal updateMealInfo(String shop, String food, String newfoodName, int price, int food_star);
 
-	// 5.·j«°¥«§ä©±®a(Åã¥Ü©±®a¡B©±®aµû»ù¡BÀ\ÂI¡B»ù®æ¡BÀ\ÂIµû»ù)
+	// 5.åˆ©ç”¨åŸå¸‚å°‹æ‰¾åº—å®¶(å¯é™åˆ¶é¡¯æ¯”æ•¸)
 	public List<FoodMapRes> findByCity(String city, int displayAmount);
 
-	// 6.·j©±µû§ä©±®a(Åã¥Ü«°¥«¡B©±¦W¡B©±µû¡BÀ\ÂI»ù®æ¡BÀ\³»µû»ù)
+	// 6.åˆ©ç”¨åº—å®¶è©•åƒ¹æŸ¥è©¢(ä¾è©•åƒ¹é«˜åˆ°ä½ï¼Œé¡¯ç¤ºåº—å®¶è³‡è¨Šèˆ‡é¤é»è³‡è¨Š)
 	public List<FoodMapRes> findByShopStarGreaterThanEqual(double shopStar);
 
-	// 7.¥Î©±µû+À\µû¨Ó·j´M©±®a
+	// 7.åˆ©ç”¨åº—å®¶è©•åƒ¹åŠé¤é»è©•åƒ¹æŸ¥è©¢(ä¾è©•åƒ¹é«˜åˆ°ä½ï¼Œé¡¯ç¤ºåº—å®¶è³‡è¨Šèˆ‡é¤é»è³‡è¨Š)
 	public List<FoodMapRes> findShopStarFoodStar(double shopStar, int food_star);
 
 }

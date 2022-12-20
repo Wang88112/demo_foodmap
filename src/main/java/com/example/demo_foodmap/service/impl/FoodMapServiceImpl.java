@@ -25,80 +25,78 @@ public class FoodMapServiceImpl implements FoodMapService {
 	@Autowired
 	private FoodMap_MealDao foodMap_MealDao;
 
-	// 1.«°¥« ©±¦W(pk) ©±®aµû»ù(1-5)
+	// 1.æ–°å¢åº—å®¶è³‡è¨Š
 	@Override
 	public FoodMapShop createfoodMap_basic(String city, String shop_basic) {
 
-		// §PÂ_¿é¤Jªº©±®a¬O§_¦s¦b
+		// åˆ¤æ–·åº—å®¶æ˜¯å¦å­˜åœ¨
 		if (foodMap_basicDao.existsById(shop_basic)) {
 			return null;
 		}
 
-		// ¦s¤J·sªº©±®a¸ê°T
 		FoodMapShop basic = new FoodMapShop(city, shop_basic);
 		return foodMap_basicDao.save(basic);
 	}
 
-	// 2.©±¦W À\ÂI »ù®æ À\ÂIµû»ù(1-5)
+	// 2.æ–°å¢é¤é»è³‡è¨Š
 	@Override
 	public FoodMapMeal createfoodMap_meal(String shop, String food, int price, int food_star) {
 
-		// §PÂ_·s¼WÀ\ÂIªº©±®a¬O§_¦s¦b
+		// åˆ¤æ–·åº—å®¶æ˜¯å¦å­˜åœ¨
 		if (!foodMap_basicDao.existsById(shop)) {
-			return null; // return null :ªí¥Ü©±®a¤£¦s¦b©óbasicªºshop_basic¸Ì¡AµLªk·s¼WÀ\ÂI
+			return null; // return null :ä¸å­˜åœ¨ : return null
 		}
 
-		// ±NFoodMapMealªºÂù¥DÁä¥]¦¨Optional¥h§PÂ_
+		// å°‡FoodMapMealçš„é›™ä¸»éµåŒ…æˆOptional
 		FoodMapMealId foodMapMealId = new FoodMapMealId(shop, food);
 		Optional<FoodMapMeal> foodMap_mealOp = foodMap_MealDao.findById(foodMapMealId);
 		if (foodMap_mealOp.isPresent()) {
-			return null; // return null:¦¹©±¦W»PÀ\ÂI¦WºÙ¤w¦s¦b
+			return null; // return null:å­˜åœ¨ : return null
 		}
 
-		// ¦s¤J·sªºÀ\ÂI
 		FoodMapMeal meal = new FoodMapMeal(shop, food, price, food_star);
 		foodMap_MealDao.save(meal);
 
 		List<FoodMapMeal> meallist = foodMap_MealDao.findByShop(shop);
 
-		int total = 0; // total¨Ó©ñÁ`µû»ù¥[Á`
-		int count = 0; // ­pºâ¦¸¼Æ
+		int total = 0; // totalä¾†æ”¾ç¸½è©•åƒ¹åŠ ç¸½
+		int count = 0; // è¨ˆç®—æ¬¡æ•¸
 		for (FoodMapMeal meal1 : meallist) {
-			total += meal1.getFoodStar(); // total²Ö¥[­pºâ¦¹©±®a¨Cµ§À\ÂIªºµû»ù
-			count++; // ­pºâÀ\ÂIµû»ù¦³´Xµ§
+			total += meal1.getFoodStar();  // totalç´¯åŠ è¨ˆç®—æ­¤åº—å®¶æ¯ç­†é¤é»çš„è©•åƒ¹
+			count++; // è¨ˆç®—é¤é»è©•åƒ¹æœ‰å¹¾ç­†
 		}
 
-		// Á`µû»ù¼Æ°£¦¸¼Æªº­È(¤p¼Æ1¦ì)¡A¬°©±®aµû»ù
-		double shopStar = (double) total / count; // ³]ÅÜ¼Æªí¥Ütotal / count(¤p¼ÆÂI)
-		shopStar = Math.round(shopStar * 10.0) / 10.0;// ¥|±Ë¤­¤Jªº­È¡A±N¼Æ­È©w¦b¶È¤p¼Æ²Ä¤@¦ì
+		// ç¸½è©•åƒ¹æ•¸é™¤æ¬¡æ•¸çš„å€¼(å°æ•¸1ä½)ï¼Œç‚ºåº—å®¶è©•åƒ¹
+		double shopStar = (double) total / count;  // è¨­è®Šæ•¸è¡¨ç¤ºtotal / count(å°æ•¸é»)
+		shopStar = Math.round(shopStar * 10.0) / 10.0; // å››æ¨äº”å…¥çš„å€¼ï¼Œå°‡æ•¸å€¼å®šåœ¨åƒ…å°æ•¸ç¬¬ä¸€ä½
 
-		Optional<FoodMapShop> foodMap_basicOp = foodMap_basicDao.findById(shop); // ´M§äbasic©±®a
+		Optional<FoodMapShop> foodMap_basicOp = foodMap_basicDao.findById(shop); // å°‹æ‰¾basicåº—å®¶
 		foodMap_basicOp.get().setShopStar(shopStar);
-		foodMap_basicDao.save(foodMap_basicOp.get()); // foodMap_basicDao.save¦^¶Ç­È¬°foodMap_basicOp.get()
+		foodMap_basicDao.save(foodMap_basicOp.get()); // foodMap_basicDao.saveå›å‚³å€¼ç‚ºfoodMap_basicOp.get()
 		return meal;
 	}
 
-	// 3.§ó·s «°¥« ©±¦W(pk)
+	// 3.æ›´æ–° åŸå¸‚ åº—å(pk)
 	@Override
 	public FoodMapShop updateShopInfo(String shopName, String city, String newShopName) {
 
 		Optional<FoodMapShop> shopOp = foodMap_basicDao.findById(shopName);
-		if (shopOp.isEmpty()) { // §PÂ_¦³µL¦¹©±®a¦WºÙfoodMap_basicDao.existsById(shopName)
+		if (shopOp.isEmpty()) {  // åˆ¤æ–·æœ‰ç„¡æ­¤åº—å®¶åç¨±foodMap_basicDao.existsById(shopName)
 			return null;
 		}
 
 		FoodMapShop shop = shopOp.get();
-		// §PÂ_¦³µL·sªº«°¥«
+		// åˆ¤æ–·æœ‰ç„¡æ–°çš„åŸå¸‚
 		if (StringUtils.hasText(city)) {
 			shop.setCity(city);
 		}
-		// §PÂ_¦³µL·sªº©±®a¦WºÙ
+		// åˆ¤æ–·æœ‰ç„¡æ–°çš„åº—å®¶åç¨±
 		if (StringUtils.hasText(newShopName)) {
 			foodMap_basicDao.delete(shop);
 			shop.setShopName(newShopName);
 			/*
-			 * ³s°Ê¸ê®Æ®wÀ\ÂIªºªí¡A±N­ì¥ıªº°Ó©±¦WºÙ§ï¦¨·sªº°Ó©±¦WºÙ MealDao¸Ìªº©±®aªºÀ\ÂI©ñ¶imealList
-			 * MealDao¸Ìªº©±®aªºÀ\ÂI©ñ¶imealList
+			 * é€£å‹•è³‡æ–™åº«é¤é»çš„è¡¨ï¼Œå°‡åŸå…ˆçš„å•†åº—åç¨±æ”¹æˆæ–°çš„å•†åº—åç¨± MealDaoè£¡çš„åº—å®¶çš„é¤é»æ”¾é€²mealList
+			 * MealDaoè£¡çš„åº—å®¶çš„é¤é»æ”¾é€²mealList
 			 */
 			List<FoodMapMeal> mealList = foodMap_MealDao.findByShop(shopName);  
 			for (FoodMapMeal meal : mealList) {
@@ -110,12 +108,12 @@ public class FoodMapServiceImpl implements FoodMapService {
 		return foodMap_basicDao.save(shop);
 	}
 
-	// 4.§ó·s À\ÂI »ù®æ À\ÂIµû»ù(1-5)
+	// 4.æ›´æ–° é¤é» åƒ¹æ ¼ é¤é»è©•åƒ¹(1-5)
 	@Override
 	public FoodMapMeal updateMealInfo(String shop, String food, String newfoodName, int price, int food_star) {
 		FoodMapMealId foodMapMealId = new FoodMapMealId(shop, food);
 		Optional<FoodMapMeal> foodOp = foodMap_MealDao.findById(foodMapMealId);
-		if (foodOp.isEmpty()) { // °Ó©±¡BÀ\ÂI¤£¦s¦b
+		if (foodOp.isEmpty()) { // å•†åº—ã€é¤é»ä¸å­˜åœ¨
 			return null;
 		}
 		FoodMapMeal foodmeal = foodOp.get();
@@ -129,39 +127,39 @@ public class FoodMapServiceImpl implements FoodMapService {
 		if (food_star > 0) {
 			foodmeal.setFoodStar(food_star);
 
-			// ³s°Ê¸ê®Æ®wÀ\ÂIªºªí¡A±N­ì¥ıªºÀ\ÂIµû»ù§ï¦¨·sªºÀ\ÂIµû»ù
-			List<FoodMapMeal> meallist = foodMap_MealDao.findByShop(shop); // ´M§ämeal©±®a
+			// é€£å‹•è³‡æ–™åº«é¤é»çš„è¡¨ï¼Œå°‡åŸå…ˆçš„é¤é»è©•åƒ¹æ”¹æˆæ–°çš„é¤é»è©•åƒ¹
+			List<FoodMapMeal> meallist = foodMap_MealDao.findByShop(shop); // å°‹æ‰¾mealåº—å®¶
 			int total = 0;
 			int count = 0;
 			for (FoodMapMeal meal1 : meallist) { 
-				total += meal1.getFoodStar();  // total²Ö¥[­pºâ¦¹©±®aÀ\ÂIµû»ù
-				count++;  // ­pºâÀ\ÂIµû»ù¦³´Xµ§ 
+				total += meal1.getFoodStar();  // totalç´¯åŠ è¨ˆç®—æ­¤åº—å®¶é¤é»è©•åƒ¹
+				count++;  // è¨ˆç®—é¤é»è©•åƒ¹æœ‰å¹¾ç­† 
 			}
 
-			// ³]ÅÜ¼ÆshopStarªí¥Ütotal / count(¤p¼ÆÂI)
+			// è¨­è®Šæ•¸shopStarè¡¨ç¤ºtotal / count(å°æ•¸é»)
 			double shopStar = (double) (total + food_star) / (count + 1); 
 			shopStar = Math.round(shopStar * 10.0) / 10.0;
 
-			Optional<FoodMapShop> foodMap_basicOp = foodMap_basicDao.findById(shop); // ´M§äbasic©±®a
+			Optional<FoodMapShop> foodMap_basicOp = foodMap_basicDao.findById(shop); // å°‹æ‰¾basicåº—å®¶
 			foodMap_basicOp.get().setShopStar(shopStar);
 			foodMap_basicDao.save(foodMap_basicOp.get());
 		}
 		return foodMap_MealDao.save(foodmeal);
 	}
 
-	// 5.·j«°¥«§ä©±®a(Åã¥Ü©±®a¡B©±®aµû»ù¡BÀ\ÂI¡B»ù®æ¡BÀ\ÂIµû»ù)
+	// 5.æœåŸå¸‚æ‰¾åº—å®¶(é¡¯ç¤ºåº—å®¶ã€åº—å®¶è©•åƒ¹ã€é¤é»ã€åƒ¹æ ¼ã€é¤é»è©•åƒ¹)
 	@Override
 	public List<FoodMapRes> findByCity(String city, int displayAmount) {
-		List<FoodMapRes> resList = new ArrayList<FoodMapRes>(); // «¬ºA
-		if (foodMap_basicDao.findByCity(city).isEmpty()) { // §PÂ_¬O§_¦³¦¹«°¥«
+		List<FoodMapRes> resList = new ArrayList<FoodMapRes>(); // å‹æ…‹
+		if (foodMap_basicDao.findByCity(city).isEmpty()) {  // åˆ¤æ–·æ˜¯å¦æœ‰æ­¤åŸå¸‚
 			return null;
 		}
 
-		List<FoodMapShop> baiscList = foodMap_basicDao.findByCity(city);// §ä«°¥«
-		if (displayAmount == 0 || displayAmount > baiscList.size()) { // Åã¥Üµ§¼Æ­­¨î0¸ò¶W¹L³£Åã¥Ü¥ş³¡
+		List<FoodMapShop> baiscList = foodMap_basicDao.findByCity(city);  // æ‰¾åŸå¸‚
+		if (displayAmount == 0 || displayAmount > baiscList.size()) {  // é¡¯ç¤ºç­†æ•¸é™åˆ¶0è·Ÿè¶…ééƒ½é¡¯ç¤ºå…¨éƒ¨
 			displayAmount = baiscList.size();
 		}
-		baiscList = baiscList.subList(0, displayAmount); // µ¹¤©¼Æ­È­­¨îÅã¥Üµ§¼Æ
+		baiscList = baiscList.subList(0, displayAmount);  // çµ¦äºˆæ•¸å€¼é™åˆ¶é¡¯ç¤ºç­†æ•¸
 
 		List<String> shopList = new ArrayList<>();
 		for (FoodMapShop shop : baiscList) {
@@ -178,31 +176,31 @@ public class FoodMapServiceImpl implements FoodMapService {
 					eachShopMealList.add(meal);
 				}
 			}
-			res.setMealList(eachShopMealList); // ´M§ä©±®a¨Ã¨ú±o©Ò¦³À\ÂI¸ê°T
+			res.setMealList(eachShopMealList); // å°‹æ‰¾åº—å®¶ä¸¦å–å¾—æ‰€æœ‰é¤é»è³‡è¨Š
 			res.setShop(shop); //
 			resList.add(res);
 		}
 		return resList;
 	}
 
-	// 6.·j©±µû§ä©±®a(Åã¥Ü«°¥«¡B©±¦W¡B©±µû¡BÀ\ÂI»ù®æ¡BÀ\³»µû»ù)
+	// 6.æœåº—è©•æ‰¾åº—å®¶(é¡¯ç¤ºåŸå¸‚ã€åº—åã€åº—è©•ã€é¤é»åƒ¹æ ¼ã€é¤é ‚è©•åƒ¹)
 	@Override
 	public List<FoodMapRes> findByShopStarGreaterThanEqual(double shopStar) {
 		List<FoodMapRes> resList = new ArrayList<FoodMapRes>();
-		List<FoodMapShop> shopList = foodMap_basicDao.findByShopStarGreaterThanEqualOrderByShopStarDesc(shopStar);// ¥Î©±®aµû»ù§ä©±®a(±Æ§Ç)
+		List<FoodMapShop> shopList = foodMap_basicDao.findByShopStarGreaterThanEqualOrderByShopStarDesc(shopStar);// ç”¨åº—å®¶è©•åƒ¹æ‰¾åº—å®¶(æ’åº)
 		List<String> shopNameList = new ArrayList<>();
 		for (FoodMapShop shop : shopList) {
-			shopNameList.add(shop.getShopName());// ±N§ä¨ìªº©±®a©ñ¤JshopNameList
+			shopNameList.add(shop.getShopName()); // å°‡æ‰¾åˆ°çš„åº—å®¶æ”¾å…¥shopNameList
 		}
 
-		List<FoodMapMeal> mealList = foodMap_MealDao.findByShopInOrderByFoodStarDesc(shopNameList); // ¨Ì©±¦W§ä¨ìÀ\ÂI
+		List<FoodMapMeal> mealList = foodMap_MealDao.findByShopInOrderByFoodStarDesc(shopNameList); // ä¾åº—åæ‰¾åˆ°é¤é»
 
 		for (FoodMapShop shop : shopList) {
 			FoodMapRes res = new FoodMapRes();
 			List<FoodMapMeal> eachShopMealList = new ArrayList<>();
 			for (FoodMapMeal meal : mealList) {
-				if (shop.getShopName().equalsIgnoreCase(meal.getShop())) { // §ä¬Û¦P©±¦W
-					eachShopMealList.add(meal); // ±N¨C¤@µ§À\ÂI¸ê°T©ñ¤JeachShopMealList
+				if (shop.getShopName().equalsIgnoreCase(meal.getShop())) { // æ‰¾ç›¸åŒåº—å
+					eachShopMealList.add(meal); // å°‡æ¯ä¸€ç­†é¤é»è³‡è¨Šæ”¾å…¥eachShopMealList
 				}
 			}
 			res.setShop(shop);
@@ -212,11 +210,11 @@ public class FoodMapServiceImpl implements FoodMapService {
 		return resList;
 	}
 
-	// 7.¥Î©±µû+À\µû¨Ó·j´M©±®a
+	// 7.ç”¨åº—è©•+é¤è©•ä¾†æœå°‹åº—å®¶
 	@Override
 	public List<FoodMapRes> findShopStarFoodStar(double shopStar, int food_star) {
 		List<FoodMapRes> resList = new ArrayList<FoodMapRes>();
-		List<FoodMapShop> shopList = foodMap_basicDao.findByShopStarGreaterThanEqualOrderByShopStarDesc(shopStar);// §ä©±®aµû»ù
+		List<FoodMapShop> shopList = foodMap_basicDao.findByShopStarGreaterThanEqualOrderByShopStarDesc(shopStar); // æ‰¾åº—å®¶è©•åƒ¹
 		List<String> shopNameList = new ArrayList<>();
 		for (FoodMapShop shop : shopList) {
 			shopNameList.add(shop.getShopName());
@@ -228,8 +226,8 @@ public class FoodMapServiceImpl implements FoodMapService {
 			FoodMapRes res = new FoodMapRes();
 			List<FoodMapMeal> eachShopMealList = new ArrayList<>();
 			for (FoodMapMeal meal : mealList) {
-				if (shop.getShopName().equalsIgnoreCase(meal.getShop())) { // §ä¬Û¦P©±¦W
-					eachShopMealList.add(meal); // ±N¨C¤@µ§À\ÂI¸ê°T©ñ¤JeachShopMealList
+				if (shop.getShopName().equalsIgnoreCase(meal.getShop())) { // æ‰¾ç›¸åŒåº—å
+					eachShopMealList.add(meal); // å°‡æ¯ä¸€ç­†é¤é»è³‡è¨Šæ”¾å…¥eachShopMealList
 				}
 			}
 			res.setMealList(eachShopMealList);

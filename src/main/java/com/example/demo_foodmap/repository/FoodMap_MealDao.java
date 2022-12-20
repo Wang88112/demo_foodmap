@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.example.demo_foodmap.entity.FoodMapMeal;
 import com.example.demo_foodmap.entity.FoodMapMealId;
 
-@Repository  //¥Î©ó¸ê®Æ³B²z(CRUD)ÅıSpringBoot°UºŞ
+@Repository  //ç”¨æ–¼è³‡æ–™è™•ç†(CRUD)è®“SpringBootè¨—ç®¡
 public interface FoodMap_MealDao extends JpaRepository<FoodMapMeal, FoodMapMealId>{
 
 	public List<FoodMapMeal> findByShop(String shop);

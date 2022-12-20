@@ -23,11 +23,11 @@ public class FoodMapController {
 	@Autowired
 	private FoodMapService foodMapService;
 
-	// 1.³Ğ«Ø «°¥« ©±¦W(pk)
+	// 1.å‰µå»º åŸå¸‚ åº—å(pk)
 	@PostMapping(value = "/api/createFoodMapBasic")
 	public FoodMapRes createfoodMapBasic(@RequestBody FoodMapReq req) {
 		FoodMapRes checkResult = checkParam(req);
-		if (checkResult != null) { // ¤w±N§PÂ_¦¡¥t¼g¨p¦³¤èªk(¤U¤è)
+		if (checkResult != null) { // å·²å°‡åˆ¤æ–·å¼å¦å¯«ç§æœ‰æ–¹æ³•(ä¸‹æ–¹)
 			return checkResult;
 		}
 		FoodMapShop food = foodMapService.createfoodMap_basic(req.getCity(), req.getShop_basic());
@@ -37,7 +37,7 @@ public class FoodMapController {
 		return new FoodMapRes(food, FoodMapRtnCode.SUCCESSFUL.getMessage());
 	}
 
-	// 1.³Ğ«Ø «°¥« ©±¦W(pk) StringUtils.hasText¤èªk
+	// 1.å‰µå»º åŸå¸‚ åº—å(pk) StringUtils.hasTextæ–¹æ³•
 	private FoodMapRes checkParam(FoodMapReq req) {
 		// account,pwd,name,cannot be null or empty
 		if (!StringUtils.hasText(req.getCity())) {
@@ -49,7 +49,7 @@ public class FoodMapController {
 
 	}
 
-	// 2. ³Ğ«Ø ©±¦W À\ÂI »ù®æ À\ÂIµû»ù(1-5)
+	// 2. å‰µå»º åº—å é¤é» åƒ¹æ ¼ é¤é»è©•åƒ¹(1-5)
 	@PostMapping(value = "/api/createfoodMap_meal")
 	public FoodMapRes createfoodMap_meal(@RequestBody FoodMapReq req) {
 		if (req.getFood_star() <= 0 || req.getFood_star() > 5) {
@@ -60,7 +60,7 @@ public class FoodMapController {
 		}
 
 		FoodMapRes checkResult = checkParam1(req);
-		if (checkResult != null) { // ¤w±N§PÂ_¦¡¥t¼g¨p¦³¤èªk(¤U¤è)
+		if (checkResult != null) { // å·²å°‡åˆ¤æ–·å¼å¦å¯«ç§æœ‰æ–¹æ³•(ä¸‹æ–¹)
 			return checkResult;
 		}
 		FoodMapMeal food = foodMapService.createfoodMap_meal(req.getShop(), req.getFood(), req.getPrice(),
@@ -73,7 +73,7 @@ public class FoodMapController {
 
 	}
 
-	// 2. ³Ğ«Ø ©±¦W À\ÂI »ù®æ À\ÂIµû»ù(1-5) StringUtils.hasText¤èªk
+	// 2. å‰µå»º åº—å é¤é» åƒ¹æ ¼ é¤é»è©•åƒ¹(1-5) StringUtils.hasTextæ–¹æ³•
 	private FoodMapRes checkParam1(FoodMapReq req) {
 
 		if (!StringUtils.hasText(req.getShop())) {
@@ -85,7 +85,7 @@ public class FoodMapController {
 		return null;
 	}
 
-	// 3.§ó·s©±®a¦WºÙ¡B«°¥«
+	// 3.æ›´æ–°åº—å®¶åç¨±ã€åŸå¸‚
 	@PostMapping(value = "/api/updateShopInfo")
 	public FoodMapRes updateShopInfo(@RequestBody FoodMapReq req) {
 		FoodMapShop foodMapShop = foodMapService.updateShopInfo(req.getShop_basic(), req.getCity(),
@@ -101,7 +101,7 @@ public class FoodMapController {
 		return new FoodMapRes(foodMapShop, FoodMapRtnCode.SUCCESSFUL.getMessage());
 	}
 
-	// 4.§ó·sÀ\ÂI¦WºÙ¡B»ù®æ¡BÀ\ÂIµû»ù¡A³s°Ê©±®aµû»ù
+	// 4.æ›´æ–°é¤é»åç¨±ã€åƒ¹æ ¼ã€é¤é»è©•åƒ¹ï¼Œé€£å‹•åº—å®¶è©•åƒ¹
 	@PostMapping(value = "/api/updateMealInfo")
 	public FoodMapRes updateMealInfo(@RequestBody FoodMapReq req) {
 		FoodMapMeal FoodMapMeal = foodMapService.updateMealInfo(req.getShop(), req.getFood(), req.getNewFoodName(),
@@ -122,7 +122,7 @@ public class FoodMapController {
 		return new FoodMapRes(FoodMapMeal, FoodMapRtnCode.SUCCESSFUL.getMessage());
 	}
 
-	// 5.·j«°¥«§ä©±®a(Åã¥Ü©±®a¡B©±®aµû»ù¡BÀ\ÂI¡B»ù®æ¡BÀ\ÂIµû»ù)
+	// 5.æœåŸå¸‚æ‰¾åº—å®¶(é¡¯ç¤ºåº—å®¶ã€åº—å®¶è©•åƒ¹ã€é¤é»ã€åƒ¹æ ¼ã€é¤é»è©•åƒ¹)
 	@PostMapping(value = "/api/findByCity")
 	public FoodMapRes findByCity(@RequestBody FoodMapReq req) {
 		List<FoodMapRes> resList = foodMapService.findByCity(req.getCity(), req.getDisplayAmount());
@@ -132,7 +132,7 @@ public class FoodMapController {
 		return new FoodMapRes(resList, FoodMapRtnCode.SUCCESSFUL.getMessage());
 	}
 
-	// 6.·j©±µû§ä©±®a(Åã¥Ü«°¥«¡B©±¦W¡B©±µû¡BÀ\ÂI»ù®æ¡BÀ\³»µû»ù)
+	// 6.æœåº—è©•æ‰¾åº—å®¶(é¡¯ç¤ºåŸå¸‚ã€åº—åã€åº—è©•ã€é¤é»åƒ¹æ ¼ã€é¤é ‚è©•åƒ¹)
 	@PostMapping(value = "/api/findByShopStarGreaterThanEqual")
 	public FoodMapRes findByShopStarGreaterThanEqual(@RequestBody FoodMapReq req) {
 		if (req.getShopStar() < 0 || req.getShopStar() > 5) {
@@ -140,13 +140,13 @@ public class FoodMapController {
 		}
 		List<FoodMapRes> resList = foodMapService.findByShopStarGreaterThanEqual(req.getShopStar());
 		if (resList.isEmpty()) {
-			return new FoodMapRes(resList, "¨S¦³¤j©ó" + req.getShopStar() + "¬Pªº©±!");
+			return new FoodMapRes(resList, "æ²’æœ‰" + req.getShopStar() + "æ˜Ÿçš„åº—å®¶!");
 		}
 		
 		return new FoodMapRes(resList, FoodMapRtnCode.SUCCESSFUL.getMessage());
 	}
 
-	// 7.¥Î©±µû+À\µû¨Ó·j´M©±®a
+	// 7.ç”¨åº—è©•+é¤è©•ä¾†æœå°‹åº—å®¶
 	@PostMapping(value = "/api/findShopStarFoodStar")
 	public FoodMapRes findShopStarFoodStar(@RequestBody FoodMapReq req) {
 		if (req.getShopStar() < 0 || req.getShopStar() > 5) {
@@ -160,7 +160,7 @@ public class FoodMapController {
 		List<FoodMapRes> resList = foodMapService.findShopStarFoodStar(req.getShopStar(), req.getFood_star());
 
 		if (resList.isEmpty()) {
-			return new FoodMapRes(resList, "¨S¦³¤j©ó" + req.getShopStar() + "¬Pªº©±!");
+			return new FoodMapRes(resList, "æ²’æœ‰" + req.getShopStar() + "æ˜Ÿçš„åº—å®¶!");
 		}
 
 		return new FoodMapRes(resList, FoodMapRtnCode.SUCCESSFUL.getMessage());

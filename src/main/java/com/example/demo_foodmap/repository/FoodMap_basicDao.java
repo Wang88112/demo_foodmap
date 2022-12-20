@@ -7,13 +7,13 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo_foodmap.entity.FoodMapShop;
 
-@Repository  //¥Î©ó¸ê®Æ³B²z(CRUD)ÅıSpringBoot°UºŞ
+@Repository  //ç”¨æ–¼è³‡æ–™è™•ç†(CRUD)è®“SpringBootè¨—ç®¡
 public interface FoodMap_basicDao extends JpaRepository<FoodMapShop, String> {
 	
-	//·j«°¥«§ä©±®a
+	//æœåŸå¸‚æ‰¾åº—å®¶
 	public List<FoodMapShop>  findByCity(String city);
 	
-	//·j©±µû§ä©±®a
+	//æœåº—è©•æ‰¾åº—å®¶
 	public List<FoodMapShop> findByShopStarGreaterThanEqualOrderByShopStarDesc(double shopStar);
 	
 	//
