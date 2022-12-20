@@ -8,9 +8,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FoodMapResList {
 
-	private FoodMapMeal foodMapMeal;  //將整個FoodMapMeal放入
+	private FoodMapMeal foodMapMeal; 
 	
-	private List<FoodMapRes> resList;  //
+	private List<FoodMapRes> resList;  
 	
 	private String city;
 
