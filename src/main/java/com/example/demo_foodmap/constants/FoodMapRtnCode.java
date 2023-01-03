@@ -25,8 +25,8 @@ public enum FoodMapRtnCode {
 	private String code;
 	private String message;
 	
-	private FoodMapRtnCode(String code, String message) {   //æ­¤å»ºæ§‹æ–¹æ³•ç”¨åœ¨ä¸Šé¢
-		this.code = code;                                   //enumçš„å»ºæ§‹æ–¹æ³•åªèƒ½æ˜¯private
+	private FoodMapRtnCode(String code, String message) {   //¦¹«Øºc¤èªk¥Î¦b¤W­±
+		this.code = code;                                   //enumªº«Øºc¤èªk¥u¯à¬Oprivate
 		this.message = message;
 	}
 	
